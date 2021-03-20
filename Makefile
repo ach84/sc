@@ -52,7 +52,6 @@ USELOCALE=-DUSELOCALE
 
 # Set DOBACKUPS if you would like a backup copy of a source file on a save
 #DOBACKUPS=
-DOBACKUPS=-DDOBACKUPS
 
 # Set SIGVOID if signal routines are type void.
 # use: SIGVOID=-DSIGVOID for:
@@ -109,7 +108,7 @@ SAVE=-DSAVENAME=\"$(NAME).SAVE\"
 # most systems
 #CRYPT=-DCRYPT_PATH=\"/bin/crypt\"
 # BSD
-# CRYPT=-DCRYPT_PATH=\"/usr/bin/crypt\"
+CRYPT=-DCRYPT_PATH=\"/usr/bin/crypt\"
 # other people?
 #CRYPT=-DCRYPT_PATH=\"/usr/local/bin/crypt\"
 
@@ -441,7 +440,7 @@ qhelp.o: qhelp.c sc.h
 range.o: range.c sc.h
 
 sc.o:	sc.h sc.c
-	$(CC) ${CFLAGS} ${DFLT_PAGER} ${SIGVOID} ${SAVE} -c sc.c
+	$(CC) ${CFLAGS} ${DFLT_PAGER} ${SIGVOID} ${SAVE} ${CRYPT} -c sc.c
 
 screen.o:	sc.h screen.c
 	$(CC) ${CFLAGS} ${BROKENCURSES} ${IDLOKISBAD} ${RIGHTBUG} ${SIGVOID} \

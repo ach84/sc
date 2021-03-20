@@ -24,7 +24,7 @@ int         Crypt = 0;
 #define MAXKEYWORDSIZE 30
 char	    KeyWord[MAXKEYWORDSIZE] = {""};
 
-void
+int
 creadfile(char *save, int  eraseflg)
 {
     register FILE *f;
@@ -32,18 +32,18 @@ creadfile(char *save, int  eraseflg)
     int fildes;
     int pid;
 
-    if (eraseflg && strcmp(save, curfile) && modcheck(" first")) return;
+    if (eraseflg && strcmp(save, curfile) && modcheck(" first")) return 0;
 
     if ((fildes = open(findhome(save), O_RDONLY, 0)) < 0) {
 	error ("Can't read file \"%s\"", save);
-	return;
+	return -1;
     }
 
     if (eraseflg) erasedb();
 
     if (pipe(pipefd) < 0) {
 	error("Can't make pipe to child");
-	return;
+	return -1;
     }
 
     deraw(1);
@@ -68,7 +68,7 @@ creadfile(char *save, int  eraseflg)
 	    (void) kill(pid, 9);
 	    error("Can't fdopen file \"%s\"", save);
 	    (void)close(pipefd[0]);
-	    return;
+	    return -1;
 	}
     }
 
@@ -86,6 +86,8 @@ creadfile(char *save, int  eraseflg)
 	(void) strcpy(curfile, save);
 	modflg = 0;
     }
+
+    return 0;
 }
 
 int
